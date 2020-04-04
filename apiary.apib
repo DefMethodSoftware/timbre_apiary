@@ -1,0 +1,431 @@
+FORMAT: 1A
+HOST: https://timbre-api.herokuapp.com/
+
+# Timbre API
+
+Api for Timbre, who knows what else to put here?
+
+## User Collection [/users]
+
+### Create a New User [POST /users]
+
+User sends a request to create a new account
+
++ Request (application/json)
+
+    + Body
+    
+            {
+                "email": "london@london.com",
+                "password": "1qaz!QAZ",
+                "username": "london"
+            }
+    
++ Response 201 (application/json)
+        
+    + Body
+    
+            {
+                "email": "london@london.com",
+                "userId": "abcd1234 ",
+                "token": "acbd1234"
+            }
+
++ Response 400 (application/json)
+
++ Request (application/json)
+
+    + Body
+    
+            {
+                "wrong": "body"`
+            }
+    
++ Response 400 (application/json)
+
++ Request (application/json)
+    
++ Response 400 (application/json)
+
+
+### Update User Profile [PATCH /users/{user_id}]
+
+User sends their profile information to be updated.
+
++ Parameters
+    + user_id (string) - the ID of the user that is updating their profile
+
++ Request (application/json)
+            
+            
+    + Headers
+    
+            Authorization: "abcd1234"
+
+    + Body
+    
+            {
+                "firstName": "Bob",
+                "lastName": "Friendly",
+                "bio": "No",
+                "instruments": [
+                    {
+                        "instrument": "guitar",
+                        "rating": 3
+                    },
+                    {
+                        "instrument": "drums",
+                        "rating": 5
+                    }
+                ],
+                "location": {
+                    "coords": [55.509865,-0.118092],
+                    "friendlyLocation": "London, UK"
+                }
+            }
+
++ Response 204 (application/json)
+
+
++ Request (application/json)
+            
+            
+    + Headers
+    
+            Authorization: "abcd1234"
+
+    + Body
+    
+            {
+                "wrong":"body"
+            }
+
++ Response 400 (application/json)
+
+
++ Request (application/json)
+            
+            
+    + Headers
+    
+            Authorization: "wrong user"
+
+    + Body
+    
+            {
+                "firstName": "Bob",
+                "lastName": "Friendly",
+                "bio": "No",
+                "instruments": [
+                    {
+                        "instrument": "guitar",
+                        "rating": 3
+                    },
+                    {
+                        "instrument": "drums",
+                        "rating": 5
+                    }
+                ],
+                "location": {
+                    "coords": [55.509865,-0.118092],
+                    "friendlyLocation": "London, UK"
+                }
+            }
+
++ Response 401 (application/json)
+
+
++ Request (application/json)
+
+    + Body
+    
+            {
+                "firstName": "Bob",
+                "lastName": "Friendly",
+                "bio": "No",
+                "instruments": [
+                    {
+                        "instrument": "guitar",
+                        "rating": 3
+                    },
+                    {
+                        "instrument": "drums",
+                        "rating": 5
+                    }
+                ],
+                "location": {
+                    "coords": [55.509865,-0.118092],
+                    "friendlyLocation": "London, UK"
+                }
+            }
+
++ Response 403 (application/json)
+
+## Band Collection [/bands]
+
+### Get Bands [GET /bands]
+
+User requests to see bands near them
+
++ Request (application/json)
+
+            
+    + Headers
+    
+            Authorization: "abcd1234"
+            
++ Response 200 (application/json)
+
+    + Body
+                
+            {
+                "bands": [
+                    {
+                        "membershipRequests": [],
+                        "_id": "abcd1234",
+                        "bandName": "The Londons",
+                        "missingInstruments": {
+                            "guitar": 2,
+                            "vocals": 1
+                        },
+                        "bio": "Awesomest band evr",
+                        "location": "abcd1234",
+                        "user": "abcd1234",
+                        "createdAt": "2020-04-04T03:11:19.346Z",
+                        "updatedAt": "2020-04-04T03:11:19.346Z",
+                        "__v": 0
+                    },
+                    {
+                        "membershipRequests": [],
+                        "_id": "abcd1234",
+                        "bandName": "The Spitalfieldses",
+                        "missingInstruments": {
+                            "bass": 1
+                        },
+                        "bio": "We r kool",
+                        "location": "abcd1234",
+                        "user": "abcd1234",
+                        "createdAt": "2020-04-04T03:11:19.346Z",
+                        "updatedAt": "2020-04-04T03:11:19.346Z",
+                        "__v": 0
+                    }
+                ]
+            }
+
++ Request (application/json)
+
+            
+    + Headers
+    
+            Authorization: "user with incomplete profile"
+
++ Response 400 (application/json)
+
++ Request (application/json)
+
++ Response 403 (application/json)
+
+### Create a New Band [POST /bands]
+
+User creates a new band
+
++ Request (application/json)
+            
+            
+    + Headers
+    
+            Authorization: "abcd1234"
+
+    + Body
+    
+            {
+                "bandName": "The Londons",
+                "missingInstruments": {"guitar": 2, "vocals": 1},
+                "bio": "Test 5 Band"
+            }
+        
++ Response 201 (application/json)
+
+            "Band created successfully"
+        
++ Request (application/json)
+            
+            
+    + Headers
+    
+            Authorization: "abcd1234"
+
+    + Body
+        
+            {
+                "wrong":"body"
+            }
+            
+        
++ Request 400 (application/json)
+            
+            
+    + Headers
+    
+            Authorization: "user with incomplete profile"
+
+    + Body
+    
+            {
+                "bandName": "The Londons",
+                "missingInstruments": {"guitar": 2, "vocals": 1},
+                "bio": "Test 5 Band"
+            }
+
++ Response 400 (application/json)
+
+        
++ Request (application/json)
+            
+            
+    + Body
+        
+            {
+                "bandName": "The Londons",
+                "missingInstruments": {"guitar": 2, "vocals": 1},
+                "bio": "Test 5 Band"
+            }
+
++ Response 403 (application/json)
+
+## Membership Request Collection [/bands/{band_id}/membership_requests]
+
+### View Membership Requests [GET /membershi_requests]
+
+User asks to see their membership requests
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: "abcd1234"
+
++ Response 200 (application/json)
+    
+    + Body
+        
+            {
+                "membershipRequests": [
+                    {
+                        "accepted": false,
+                        "declined": false,
+                        "_id": "abcd1234",
+                        "user": "abcd1234",
+                        "band": "abcd1234",
+                        "__v": 0
+                    },
+                    {
+                        "accepted": false,
+                        "declined": false,
+                        "_id": "abcd1234",
+                        "user": "abcd1234",
+                        "band": "abcd1234",
+                        "__v": 0
+                    }
+                ]
+            }
+
++ Request (application/json)
+    
+    + Headers
+    
+            Authorization: "user with no bands"
+
++ Response 400 (application/json)
+
++ Request (application/json)
+
++ Response 403 (application/json)
+
+### Create Membership Request Against a Band [POST /band/{band_id}/membership_requests]
+
+User requests to join a band
+
++ Parameters
+    + band_id (string) - the ID of the band the user would like to join
+
++ Request (application/json)
+
+    + Headers
+    
+            Authorization: "abcd1234"
+
++ Response 201 (application/json)
+
+
++ Request (application/json)
+    
+    + Headers
+    
+            Authorization: "user with no profile"
+
++ Response 400 (application/json)
+
++ Request (application/json)
+
++ Response 403 (application/json)
+
+### Respond to a Membership Request [PATCH /bands/{band_id}/membership_requests/{membership_request_id}]
+
+User responds to their bands membership request
+
++ Parameters
+    + band_id (string) - the ID of the band the request was made against
+    + membership_request_id (string) - the ID of the request the user would like to respond to
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: "abcd1234"
+            
+    + Body
+    
+            {
+                "accepted": true
+            }
+
++ Response 204 (application/json)
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: "abcd1234"
+            
+    + Body
+    
+            {
+                "wrong":"body"
+            }
+
++ Response 400 (application/json)
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: "user without permission"
+            
+    + Body
+    
+            {
+                "accepted": true
+            }
+
++ Response 401 (application/json)
+
++ Request (application/json)
+            
+    + Body
+    
+            {
+                "accepted": true
+            }
+
++ Response 403 (application/json)
