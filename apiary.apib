@@ -24,12 +24,13 @@ User sends a request to create a new account
 + Response 201 (application/json)
         
     + Body
-    
+
             {
                 "email": "london@london.com",
-                "userId": "abcd1234 ",
-                "token": "acbd1234"
+                "userId": "abcd1234",
+                "token": "abcd1234"
             }
+
 + Request (application/json)
 
     + Body
@@ -157,6 +158,43 @@ User sends their profile information to be updated.
             }
 
 + Response 403 (application/json)
+
+### Authenticate [POST /users/login]
+
+User authenticates with their existing credentials
+
++ Request (application/json)
+
+    + Body
+            {
+                "email": "user@email.com",
+                "password": "password"
+            }
+
++ Response 200 (application/json)
+
+    + Body
+
+            {
+                "email": "london@london.com",
+                "userId": "abcd1234",
+                "token": "abcd1234"
+            }
+
+
++ Request (application/json)
+
+    + Body
+
+            {
+                "wrong": "body"
+            }    
+
++ Response 400 (application/json)         
+
++ Request (application/json)
+
++ Response 400 (application/json)
 
 ## Band Collection [/bands]
 
